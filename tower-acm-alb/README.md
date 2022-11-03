@@ -11,7 +11,8 @@ The example below, will show how to create a public certificate, an external app
 ```hcl
 ## main.tf
 module "tower-acm-alb" {
-  source                        = "github.com/seqeralabs/terraform-modules/tower-acm-alb"
+  source                        = "github.com/seqeralabs/terraform-modules//tower-acm-alb"
+  version                       = "0.1.0"
   record_name                   = "tower.example.com"
   alb_name                      = "tower-alb"
   domain_name                   = "example.com"
