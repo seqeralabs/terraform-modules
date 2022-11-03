@@ -1,5 +1,3 @@
 .terraform*
 .DS_Store
-.helm*
-destroy.sh
 *hashicorp*
