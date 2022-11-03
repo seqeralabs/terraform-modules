@@ -64,3 +64,10 @@ variable "vpc_id" {
   type        = string
   description = "The ID of the VPC where the EC2 instance running the k3s cluster is deployed."
 }
+
+## Tags
+variable "tags" {
+  description = "A map of tags to add to all resources"
+  type        = map(string)
+  default     = {}
+}

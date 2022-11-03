@@ -11,15 +11,15 @@ The example below, will show how to create a public certificate, an external app
 ```hcl
 ## main.tf
 module "tower-acm-alb" {
-  source                        = "/Users/adianny/seqera/git/infrastructure/modules/tower-acm-alb/" ## Example using local env.
-  record_name                   = "tower.staging-tower.xyz"
+  source                        = "github.com/seqeralabs/terraform-modules/tower-acm-alb"
+  record_name                   = "tower.example.com"
   alb_name                      = "tower-alb"
-  domain_name                   = "staging-tower.xyz"
-  zone_id                       = "Z3A9J2J0REKC7B"
+  domain_name                   = "example.com"
+  zone_id                       = "ABCDEFG1234ABCDFG"
   instance_private_ip           = "172.31.37.61"
-  instance_id                   = "i-0ba8e04868c61909e"
-  vpc_id                        = "vpc-113f1177"
-  public_subnets_id             = ["subnet-7c21b91a", "subnet-80a9c2c8", "subnet-baa90ce0"]
+  instance_id                   = "i-01234abcd4321abc"
+  vpc_id                        = "vpc-1234abc1234"
+  public_subnets_id             = ["subnet-1234abc1234", "subnet-1234abc1234", "subnet-1234abc1234"]
   alb_delete_protection_enabled = false
 }
 ```
@@ -136,6 +136,7 @@ No modules.
 | <a name="input_alb_delete_protection_enabled"></a> [alb\_delete\_protection\_enabled](#input\_alb\_delete\_protection\_enabled) | Where to enabled or disable deletion protection for the AWS Application Load Balancer. | `bool` | `true` | no |
 | <a name="input_alb_sg_ports"></a> [alb\_sg\_ports](#input\_alb\_sg\_ports) | AWS Security Group ports that will be exposed in the ALB. | `set(number)` | <pre>[<br>  80,<br>  443<br>]</pre> | no |
 | <a name="input_ec2_sg_port"></a> [ec2\_sg\_port](#input\_ec2\_sg\_port) | Port where the EC2 instance running k3s cluster will expose the application. | `number` | `80` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to add to all resources | `map(string)` | `{}` | no |
 
 ## Outputs
 

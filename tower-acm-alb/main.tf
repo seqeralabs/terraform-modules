@@ -8,6 +8,10 @@ resource "aws_acm_certificate" "this" {
     domain_name       = var.record_name
     validation_domain = var.domain_name
   }
+
+  tags = merge(
+    var.tags,
+  )
 }
 
 resource "aws_acm_certificate_validation" "this" {
@@ -23,6 +27,10 @@ resource "aws_lb" "this" {
   subnets            = var.public_subnets_id
 
   enable_deletion_protection = var.alb_delete_protection_enabled
+
+  tags = merge(
+    var.tags,
+  )
 }
 
 
@@ -33,6 +41,10 @@ resource "aws_lb_target_group" "this" {
   protocol    = "HTTP"
   vpc_id      = var.vpc_id
   target_type = "instance"
+
+  tags = merge(
+    var.tags,
+  )
 }
 
 resource "aws_lb_target_group_attachment" "this" {
@@ -52,6 +64,10 @@ resource "aws_lb_listener" "https" {
     type             = "forward"
     target_group_arn = aws_lb_target_group.this.arn
   }
+
+  tags = merge(
+    var.tags,
+  )
 }
 
 resource "aws_lb_listener" "http" {
@@ -68,6 +84,10 @@ resource "aws_lb_listener" "http" {
       status_code = "HTTP_301"
     }
   }
+
+  tags = merge(
+    var.tags,
+  )
 }
 
 ## Route53
@@ -86,6 +106,10 @@ resource "aws_route53_record" "this" {
   ttl             = 60
   type            = each.value.type
   zone_id         = var.zone_id
+
+  tags = merge(
+    var.tags,
+  )
 }
 
 resource "aws_route53_record" "alb_record" {
@@ -98,6 +122,10 @@ resource "aws_route53_record" "alb_record" {
     zone_id                = aws_lb.this.zone_id
     evaluate_target_health = true
   }
+
+  tags = merge(
+    var.tags,
+  )
 }
 
 ## Security Group
@@ -126,6 +154,10 @@ resource "aws_security_group" "alb_sg" {
     protocol    = "TCP"
     cidr_blocks = ["${var.instance_private_ip}/32"]
   }
+
+  tags = merge(
+    var.tags,
+  )
 }
 
 resource "aws_security_group" "ec2_sg" {
@@ -150,4 +182,8 @@ resource "aws_security_group" "ec2_sg" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  tags = merge(
+    var.tags,
+  )
 }
