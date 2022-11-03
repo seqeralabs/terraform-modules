@@ -12,7 +12,6 @@ The example below, will show how to create a public certificate, an external app
 ## main.tf
 module "tower-acm-alb" {
   source                        = "github.com/seqeralabs/terraform-modules//tower-acm-alb"
-  version                       = "0.1.0"
   record_name                   = "tower.example.com"
   alb_name                      = "tower-alb"
   domain_name                   = "example.com"
@@ -22,6 +21,10 @@ module "tower-acm-alb" {
   vpc_id                        = "vpc-1234abc1234"
   public_subnets_id             = ["subnet-1234abc1234", "subnet-1234abc1234", "subnet-1234abc1234"]
   alb_delete_protection_enabled = false
+  tags                          = {
+    Terraform = "true"
+    Application = "Tower"
+  }
 }
 ```
 
