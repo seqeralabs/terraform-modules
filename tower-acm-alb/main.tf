@@ -179,3 +179,8 @@ resource "aws_security_group" "ec2_sg" {
     var.tags,
   )
 }
+
+resource "aws_network_interface_sg_attachment" "this" {
+  security_group_id    = aws_security_group.ec2_sg.id
+  network_interface_id = data.aws_instance.this.network_interface_id
+}
