@@ -106,10 +106,6 @@ resource "aws_route53_record" "this" {
   ttl             = 60
   type            = each.value.type
   zone_id         = var.zone_id
-
-  tags = merge(
-    var.tags,
-  )
 }
 
 resource "aws_route53_record" "alb_record" {
@@ -122,10 +118,6 @@ resource "aws_route53_record" "alb_record" {
     zone_id                = aws_lb.this.zone_id
     evaluate_target_health = true
   }
-
-  tags = merge(
-    var.tags,
-  )
 }
 
 ## Security Group
