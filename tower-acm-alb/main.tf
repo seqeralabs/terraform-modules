@@ -39,7 +39,7 @@ resource "aws_lb_target_group" "this" {
   name        = "tower-target-group"
   port        = var.ec2_sg_port
   protocol    = "HTTP"
-  vpc_id      = var.vpc_id
+  vpc_id      = data.aws_vpc.this.id
   target_type = "instance"
 
   tags = merge(
@@ -105,11 +105,11 @@ resource "aws_route53_record" "this" {
   records         = [each.value.record]
   ttl             = 60
   type            = each.value.type
-  zone_id         = var.zone_id
+  zone_id         = data.aws_route53_zone.this.id
 }
 
 resource "aws_route53_record" "alb_record" {
-  zone_id = var.zone_id
+  zone_id = data.aws_route53_zone.this.id
   name    = var.record_name
   type    = "A"
 
@@ -125,7 +125,7 @@ resource "aws_security_group" "alb_sg" {
   name = "tower_alb_sg"
 
   description = "Tower ALB Security Group"
-  vpc_id      = var.vpc_id
+  vpc_id      = data.aws_vpc.this.id
 
   # Open Web ports on ALB
   dynamic "ingress" {
@@ -144,7 +144,7 @@ resource "aws_security_group" "alb_sg" {
     from_port   = var.ec2_sg_port
     to_port     = var.ec2_sg_port
     protocol    = "TCP"
-    cidr_blocks = ["${var.instance_private_ip}/32"]
+    cidr_blocks = ["${data.aws_network_interface.this.private_ip}/32"]
   }
 
   tags = merge(
@@ -156,7 +156,7 @@ resource "aws_security_group" "ec2_sg" {
   name = "tower_ec2_sg"
 
   description = "Tower ec2 instance Security Group"
-  vpc_id      = var.vpc_id
+  vpc_id      = data.aws_vpc.this.id
 
   # Open application port on EC2 instance
   ingress {

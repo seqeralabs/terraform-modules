@@ -5,10 +5,21 @@ data "aws_instance" "this" {
   }
 }
 
+data "aws_network_interface" "this" {
+  filter {
+    name   = "attachment.instance-id"
+    values = [var.instance_id]
+  }
+}
+
+data "aws_subnet" "this" {
+  id = data.aws_instance.this.subnet_id
+}
+
 data "aws_vpc" "this" {
-  id = var.vpc_id
+  id = data.aws_subnet.this.vpc_id
 }
 
 data "aws_route53_zone" "this" {
-  zone_id = var.zone_id
+  name = var.domain_name
 }

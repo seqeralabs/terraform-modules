@@ -1,9 +1,3 @@
-## k3s instance IP
-variable "instance_private_ip" {
-  type        = string
-  description = "Private IP of the instance running the k3s cluster."
-}
-
 ## k3s instance ID
 variable "instance_id" {
   type        = string
@@ -20,11 +14,6 @@ variable "record_name" {
 variable "domain_name" {
   type        = string
   description = "The domain name of the hosted zone that will be used for ACM certificate, and DNS records."
-}
-
-variable "zone_id" {
-  type        = string
-  description = "Zone ID for the AWS Route53 Hosted zone that will be used for ACM certificate, and DNS records."
 }
 
 ## ALB Security Group Ports
@@ -57,12 +46,6 @@ variable "alb_delete_protection_enabled" {
 variable "public_subnets_id" {
   type        = list(string)
   description = "A list with a minimun of two public subnets where the AWS Application Load Balancer will be allocated."
-}
-
-## VPC ID
-variable "vpc_id" {
-  type        = string
-  description = "The ID of the VPC where the EC2 instance running the k3s cluster is deployed."
 }
 
 ## Tags
