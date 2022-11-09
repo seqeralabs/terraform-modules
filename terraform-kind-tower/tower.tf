@@ -1,5 +1,22 @@
+resource "kubernetes_namespace_v1" "tower" {
+  metadata {
+
+    labels = {
+      app = "tower"
+    }
+    name = "tower"
+  }
+
+  depends_on = [
+    resource.kind_cluster.this,
+    resource.helm_release.cert_manager,
+    resource.kubectl_manifest.cluster_issuer
+  ]
+}
+
 resource "kubernetes_config_map" "tower_backend_cfg" {
   metadata {
+    namespace = "tower"
     name = "tower-backend-cfg"
 
     labels = {
@@ -25,10 +42,15 @@ resource "kubernetes_config_map" "tower_backend_cfg" {
     TOWER_SMTP_PASSWORD      = var.tower_smtp_password
     TOWER_SMTP_USER          = var.tower_smtp_user
   }
+
+  depends_on = [
+    resource.kubernetes_ingress_v1
+  ]
 }
 
 resource "kubernetes_stateful_set" "mysql" {
   metadata {
+    namespace = "tower"
     name = "mysql"
 
     labels = {
@@ -86,10 +108,15 @@ resource "kubernetes_stateful_set" "mysql" {
 
     service_name = "mysql"
   }
+
+  depends_on = [
+    resource.kubernetes_ingress_v1
+  ]
 }
 
 resource "kubernetes_service" "mysql" {
   metadata {
+    namespace = "tower"
     name = "mysql"
 
     labels = {
@@ -107,10 +134,15 @@ resource "kubernetes_service" "mysql" {
       app = "mysql"
     }
   }
+
+  depends_on = [
+    resource.kubernetes_ingress_v1
+  ]
 }
 
 resource "kubernetes_stateful_set" "redis" {
   metadata {
+    namespace = "tower"
     name = "redis"
 
     labels = {
@@ -172,10 +204,15 @@ resource "kubernetes_stateful_set" "redis" {
 
     service_name = "redis"
   }
+
+  depends_on = [
+    resource.kubernetes_ingress_v1
+  ]
 }
 
 resource "kubernetes_service" "redis" {
   metadata {
+    namespace = "tower"
     name = "redis"
 
     labels = {
@@ -193,10 +230,15 @@ resource "kubernetes_service" "redis" {
       app = "redis"
     }
   }
+
+  depends_on = [
+    resource.kubernetes_ingress_v1
+  ]
 }
 
 resource "kubernetes_deployment" "cron" {
   metadata {
+    namespace = "tower"
     name = "cron"
 
     labels = {
@@ -278,10 +320,15 @@ resource "kubernetes_deployment" "cron" {
       }
     }
   }
+
+  depends_on = [
+    resource.kubernetes_ingress_v1
+  ]
 }
 
 resource "kubernetes_deployment" "backend" {
   metadata {
+    namespace = "tower"
     name = "backend"
 
     labels = {
@@ -369,10 +416,15 @@ resource "kubernetes_deployment" "backend" {
       }
     }
   }
+
+  depends_on = [
+    resource.kubernetes_ingress_v1
+  ]
 }
 
 resource "kubernetes_deployment" "frontend" {
   metadata {
+    namespace = "tower"
     name = "frontend"
 
     labels = {
@@ -412,10 +464,15 @@ resource "kubernetes_deployment" "frontend" {
       }
     }
   }
+
+  depends_on = [
+    resource.kubernetes_ingress_v1
+  ]
 }
 
 resource "kubernetes_service" "backend" {
   metadata {
+    namespace = "tower"
     name = "backend"
 
     labels = {
@@ -434,10 +491,15 @@ resource "kubernetes_service" "backend" {
       app = "backend"
     }
   }
+
+  depends_on = [
+    resource.kubernetes_ingress_v1
+  ]
 }
 
 resource "kubernetes_service" "backend_api" {
   metadata {
+    namespace = "tower"
     name = "backend-api"
   }
 
@@ -454,10 +516,15 @@ resource "kubernetes_service" "backend_api" {
 
     type = "NodePort"
   }
+
+  depends_on = [
+    resource.kubernetes_ingress_v1
+  ]
 }
 
 resource "kubernetes_service" "frontend" {
   metadata {
+    namespace = "tower"
     name = "frontend"
   }
 
@@ -474,6 +541,10 @@ resource "kubernetes_service" "frontend" {
 
     type = "NodePort"
   }
+
+  depends_on = [
+    resource.kubernetes_ingress_v1
+  ]
 }
 
 resource "kubernetes_ingress_v1" "tower_ingress" {
@@ -517,5 +588,9 @@ resource "kubernetes_ingress_v1" "tower_ingress" {
       }
     }
   }
+
+  depends_on = [
+    resource.kubernetes_ingress_v1
+  ]
 }
 
