@@ -44,7 +44,7 @@ resource "kubernetes_config_map" "tower_backend_cfg" {
   }
 
   depends_on = [
-    resource.kubernetes_ingress_v1
+    resource.kubernetes_namespace_v1.tower
   ]
 }
 
@@ -110,7 +110,7 @@ resource "kubernetes_stateful_set" "mysql" {
   }
 
   depends_on = [
-    resource.kubernetes_ingress_v1
+    resource.kubernetes_namespace_v1.tower
   ]
 }
 
@@ -136,7 +136,7 @@ resource "kubernetes_service" "mysql" {
   }
 
   depends_on = [
-    resource.kubernetes_ingress_v1
+    resource.kubernetes_namespace_v1.tower
   ]
 }
 
@@ -206,7 +206,7 @@ resource "kubernetes_stateful_set" "redis" {
   }
 
   depends_on = [
-    resource.kubernetes_ingress_v1
+    resource.kubernetes_namespace_v1.tower
   ]
 }
 
@@ -232,7 +232,7 @@ resource "kubernetes_service" "redis" {
   }
 
   depends_on = [
-    resource.kubernetes_ingress_v1
+    resource.kubernetes_namespace_v1.tower
   ]
 }
 
@@ -322,7 +322,7 @@ resource "kubernetes_deployment" "cron" {
   }
 
   depends_on = [
-    resource.kubernetes_ingress_v1
+    resource.kubernetes_namespace_v1.tower
   ]
 }
 
@@ -418,7 +418,7 @@ resource "kubernetes_deployment" "backend" {
   }
 
   depends_on = [
-    resource.kubernetes_ingress_v1
+    resource.kubernetes_namespace_v1.tower
   ]
 }
 
@@ -466,7 +466,7 @@ resource "kubernetes_deployment" "frontend" {
   }
 
   depends_on = [
-    resource.kubernetes_ingress_v1
+    resource.kubernetes_namespace_v1.tower
   ]
 }
 
@@ -493,7 +493,7 @@ resource "kubernetes_service" "backend" {
   }
 
   depends_on = [
-    resource.kubernetes_ingress_v1
+    resource.kubernetes_namespace_v1.tower
   ]
 }
 
@@ -518,7 +518,7 @@ resource "kubernetes_service" "backend_api" {
   }
 
   depends_on = [
-    resource.kubernetes_ingress_v1
+    resource.kubernetes_namespace_v1.tower
   ]
 }
 
@@ -543,7 +543,7 @@ resource "kubernetes_service" "frontend" {
   }
 
   depends_on = [
-    resource.kubernetes_ingress_v1
+    resource.kubernetes_namespace_v1.tower
   ]
 }
 
@@ -590,7 +590,7 @@ resource "kubernetes_ingress_v1" "tower_ingress" {
   }
 
   depends_on = [
-    resource.kubernetes_ingress_v1
+    resource.kubernetes_namespace_v1.tower
   ]
 }
 
